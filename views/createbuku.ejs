@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Perpustakan Online</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Create Buku</h1>
+    <a href="/">Kembali</a><br><br>
+    <form action="/create" method="post">
+      Judul : <input type="text" name="judul" required placeholder="Judul" onchange='trim(event)'><br>
+      Penulis : <input type="text" name="penulis" required placeholder="Penulis" onchange='trim(event)'><br>
+      Penerbit : <input type="text" name="penerbit" required placeholder="Penerbit" onchange='trim(event)'><br>
+      Tahun Terbit : <input type="number" min="0" name="tahun_terbit" required placeholder="Tahun Terbit"><br>
+      Edisi : <input type="number" min="1" name="edisi" required placeholder="Edisi"><br>
+      Genre : <input type="text" name="genre" required placeholder="Genre" onchange='trim(event)'><br>
+      ISBN : <input type="number" min="0" name="isbn" required placeholder="ISBN"><br>
+      Stok : <input type="number" min="0" name="stok" required placeholder="Stok"><br><br>
+      Sinopsis : <br><textarea name="sinopsis" required placeholder="Sinopsis" rows="4" cols="50" onchange='trim(event)'></textarea><br><br>
+      Isi : <br><textarea name="isi" required placeholder="Isi" rows="4" cols="50" onchange='trim(event)'></textarea><br><br>
+      <input type="submit" value="Submit" style="cursor:pointer">
+    </form>
+    <script>
+      function trim(event) {
+        event.target.value = event.target.value.trim();
+      }
+    </script>
+  </body>
+</html>

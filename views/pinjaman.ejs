@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Perpustakan Online</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Laporan Peminjaman Buku</h1>
+    <a href="/">Kembali</a><br><br>
+    <table border="1">
+      <tr>
+        <th>User</th>
+        <th>Buku</th>
+        <th>Tgl Pinjam</th>
+        <th>Lama</th>
+        <th>Status</th>
+        <th>Tgl Kembali</th>
+      </tr>
+      <% pinjam.forEach(function(pinjam) { %>
+        <tr>
+          <td><%= pinjam.user[0].username %></td>
+          <td><%= pinjam.buku[0].judul %></td>
+          <td><%= new Date(pinjam.date_pinjam).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }) %></td>
+          <td><%= pinjam.lama %></td>
+          <td><%= pinjam.status %></td>
+          <% if(pinjam.date_kembali != null) { %>
+            <td><%= new Date(pinjam.date_kembali).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }) %></td>
+          <% } %>
+        </tr>
+      <% }) %>
+    </table>
+  </body>
+</html>

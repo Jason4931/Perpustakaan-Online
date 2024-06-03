@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Perpustakan Online</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Dashboard</h1>
+    <% if(nama != null) { %>
+      <p>Selamat datang <%=nama%>!</p>
+    <% } %>
+    <input id="search" type="text" onchange="search()" placeholder="Cari buku...">
+    <select id="field">
+      <option value="judul">Judul</option>
+      <option value="penulis">Penulis</option>
+      <option value="penerbit">Penerbit</option>
+      <option value="tahunterbit">Tahun Terbit</option>
+      <option value="genre">Genre</option>
+    </select><br><br>
+    <% if(buku.length >= 1) { %>
+      <table border="1" id="buku">
+        <% buku.forEach(function(buku) { %>
+          <tr>
+            <td style="padding: 5px">
+              <a href="/isi/<%=buku._id%>" style="text-decoration: none">
+                <h2 style="margin: 0"><%= buku.judul %></h2>
+                <%= buku.penulis %> - <%= buku.tahun_terbit %><br>
+                <%= buku.genre.join(', ') %>
+              </a>
+            </td>
+          </tr>
+        <% }) %>
+      </table>
+    <% } else { %>
+      <p>Tidak ada buku saat ini</p>
+    <% } %>
+    <% if(role != null) { %>
+      <% let today = new Date(); %>
+      <% if(pinjam != null && pinjam.length > 0) { %>
+        <p>Buku yang anda pinjam: </p>
+        <% pinjam.forEach(function(pinjam) { %>
+          <% if(pinjam.status == "Sedang Dipinjam") { %>
+            <a href="/isi/<%= pinjam.buku_id %>" style="text-decoration: none"><%= pinjam.buku[0].judul %></a> (<%= pinjam.status %>) <%= new Date(pinjam.date_pinjam).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }) %> - <%= pinjam.lama %> Hari<br>
+            <% let datepinjam = new Date(pinjam.date_pinjam);
+            let hari = Math.floor((today.getTime() - datepinjam.getTime()) / (1000 * 3600 * 24));
+            if (hari == pinjam.lama - 1) { %>
+              <em>Kembali dalam 1 hari!</em><br>
+            <% } else if (hari > pinjam.lama) { %>
+              <em>Terlambat mengembalikan!</em><br>
+            <% } %>
+          <% } %>
+        <% }) %><br>
+        <% pinjam.forEach(function(pinjam) { %>
+          <% if(pinjam.status != "Sedang Dipinjam") { %>
+            <a href="/isi/<%= pinjam.buku_id %>" style="text-decoration: none"><%= pinjam.buku[0].judul %></a> (<%= pinjam.status %>)<br>
+          <% } %>
+        <% }) %><br>
+      <% } %>
+      <% if(role == "admin") { %>
+        <br><a href="/create">Tambahkan Buku</a><br>
+        <a href="/akun">Manage Akun</a><br>
+        <a href="/pinjaman">Laporan Peminjaman Buku</a><br>
+        <p>
+          Buku yang paling sering dipinjam <b>:</b> <%= borrow[0].judul %><br>
+          Genre terpopuler <b>:</b> <%= genre[0]._id %><br>
+          Ulasan terbanyak <b>:</b> <%= ulasan[0].judul %>
+        </p>
+        <h3>Ulasan Terbaru</h3>
+        <p>
+          <% notifulasan.forEach(function(ulasan) { %>
+            <a href="/isi/<%= ulasan.buku_id %>" style="text-decoration: none"><%= ulasan.user_id %> - <%= ulasan.text %></a><br>
+          <% }) %>
+        </p>
+        <h3>Buku Terbaru</h3>
+        <p>
+          <% notifbuku.forEach(function(buku) { %>
+            <a href="/isi/<%= buku._id %>" style="text-decoration: none"><%= buku.judul %></a><br>
+          <% }) %>
+        </p>
+      <% } %>
+      <br><a href="/logout">Logout</a>
+    <% } else { %>
+      <br><a href="/register">Register</a><br>
+      <a href="/login">Login</a>
+    <% } %>
+    <script>
+      async function search() {
+        let field = document.getElementById("field").value;
+        let search = document.getElementById("search").value;
+        if(search == "") {
+          window.location.href = "/";
+        }
+        const response = await fetch(`/src/${field}/${search}`, {//filter
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        const output = await response.json();
+        let table = '';
+        if (output.length > 0) {
+          output.forEach(output => {
+            table += `<tr>
+            <td style="padding: 5px">
+              <a href="/isi/${output._id}" style="text-decoration: none">
+                <h2 style="margin: 0">${output.judul}</h2>
+                ${output.penulis} - ${output.tahun_terbit}<br>
+                ${output.genre.join(', ')}
+              </a>
+            </td>
+          </tr>`;
+          });
+        } else {
+          table += `<p>Tidak Ada Data Yang Cocok</p>`;
+        }
+        document.getElementById("buku").innerHTML = table;
+      }
+    </script>
+  </body>
+</html>

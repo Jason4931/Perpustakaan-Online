@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Perpustakan Online</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1 style="margin-bottom: 10px"><%= buku[0].judul %></h1>
+    <a href="/">Kembali</a>
+    <p>
+      Penulis: <%= buku[0].penulis %><br>
+      Penerbit: <%= buku[0].penerbit %><br>
+      Tahun Terbit: <%= buku[0].tahun_terbit %><br>
+      Edisi: <%= buku[0].edisi %><br>
+      Genre: <%= buku[0].genre.join(', ') %><br>
+      ISBN: <%= buku[0].isbn %>
+    </p>
+    <p>Sinopsis: <%= buku[0].sinopsis %></p>
+    <% if(err != null) { %>
+      <% if(err == "pinjam") { %>
+        <p>Anda hanya boleh meminjam buku maksimal 5!</p>
+      <% } else if(err == "stok") { %>
+        <p>Stok sudah habis! Anda bisa menunggu yang lain untuk dikembalikan</p>
+      <% } %>
+    <% } %>
+    <% if(role != null) { %>
+      <% if(pinjam != null) { %>
+        Stok : <%= buku[0].stok %><br>
+        <% if(pinjam.length == 0 || pinjam[pinjam.length - 1].status == "Tepat Waktu" || pinjam[pinjam.length - 1].status == "Terlambat" || pinjam[pinjam.length - 1].status == "Waiting List") { %>
+          <button onclick="pinjam()">Pinjam Buku</button><br>
+        <% } else { %>
+          <button><a href="/kembali/<%= buku[0]._id %>" style="color:black;text-decoration:none">Kembalikan Buku</a></button><br>
+        <% } %>
+      <% } %>
+      <% if(role == "admin") { %>
+        <button onclick="edit()">Edit Buku</button>
+        <button><a href="/delbuku/<%= buku[0]._id %>" style="text-decoration: none; color: black">Delete Buku</a></button><br>
+      <% } %>
+    <% } %>
+    <form action="/pinjam/<%= buku[0]._id %>" method="post">
+      <p id="pinjam"></p>
+    </form>
+    <form action="/edit/<%= buku[0]._id %>" method="post">
+      <p id="edit"></p>
+    </form>
+    <table border="1"><tr><td style="padding: 10px; text-align: center">
+      <p style="font-size:medium">
+        <%= buku[0].isi %>
+      </p>
+    </td></tr></table><br>
+    <% if(role != null && pinjam.length > 0) { %>
+      <form action="/addcomment/<%= buku[0]._id %>" method="post">
+        <input type="text" name="komentar" required placeholder="Ulasan" onchange='trim(event)'>
+        <input type="submit" value="Submit" style="cursor:pointer">
+      </form>
+    <% } %>
+    <% if(komentar != null && komentar.length > 0) { %>
+      <br>Ulasan:<br>
+      <% komentar.forEach(function(komentar) { %>
+        <h2 style="display: inline-block;"><%= komentar.text %></h2>
+        <p style="display: inline-block;"><%= new Date(komentar.date).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+        <% if(role != null && role == "admin") { %>
+          <a href="/delcomment/<%= komentar._id %>?id=<%= buku[0]._id %>">Delete</a>
+        <% } %>
+        <br>
+      <% }) %>
+    <% } %>
+    <script>
+      function trim(event) {
+        event.target.value = event.target.value.trim();
+      }
+      function pinjam() {
+        if (document.getElementById("pinjam").innerHTML == "") {
+          document.getElementById("pinjam").innerHTML = `
+            <input type="number" name="lama" min="1" required placeholder="Lama Pinjam (Hari)">
+            <input type="submit" value="Submit" style="cursor:pointer">
+          `;
+        } else {
+          document.getElementById("pinjam").innerHTML = "";
+        }
+      }
+      function edit() {
+        if (document.getElementById("edit").innerHTML == "") {
+          document.getElementById("edit").innerHTML = `
+            Judul : <input type="text" name="judul" value="<%= buku[0].judul %>" required placeholder="Judul" onchange='trim(event)'><br>
+            Penulis : <input type="text" name="penulis" value="<%= buku[0].penulis %>" required placeholder="Penulis" onchange='trim(event)'><br>
+            Penerbit : <input type="text" name="penerbit" value="<%= buku[0].penerbit %>" required placeholder="Penerbit" onchange='trim(event)'><br>
+            Tahun Terbit : <input type="number" min="0" value="<%= buku[0].tahun_terbit %>" name="tahun_terbit" required placeholder="Tahun Terbit"><br>
+            Edisi : <input type="number" min="1" value="<%= buku[0].edisi %>" name="edisi" required placeholder="Edisi"><br>
+            Genre : <input type="text" name="genre" value="<%= buku[0].genre %>" required placeholder="Genre" onchange='trim(event)'><br>
+            ISBN : <input type="number" min="0" value="<%= buku[0].isbn %>" name="isbn" required placeholder="ISBN"><br>
+            Stok : <input type="number" min="0" value="<%= buku[0].stok %>" name="stok" required placeholder="Stok"><br><br>
+            Sinopsis : <br><textarea name="sinopsis" required placeholder="Sinopsis" rows="4" cols="50" onchange='trim(event)'><%= buku[0].sinopsis %></textarea><br><br>
+            Isi : <br><textarea name="isi" required placeholder="Isi" rows="4" cols="50" onchange='trim(event)'><%= buku[0].isi %></textarea><br><br>
+            <input type="submit" value="Submit" style="cursor:pointer">
+          `;
+        } else {
+          document.getElementById("edit").innerHTML = "";
+        }
+      }
+    </script>
+  </body>
+</html>

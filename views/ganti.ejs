@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Perpustakan Online</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Ganti Password</h1>
+    <% if(err != null) { %>
+      <p>Akun tidak ditemukan!</p>
+    <% } %>
+    <form action="/ganti" method="post">
+      Username: <input name="name" type="text" onchange='trim(event)'><br>
+      Password Lama: <input name="pass1" type="password" onchange='trim(event)'><br>
+      Password Baru: <input name="pass2" type="password" onchange='trim(event)'><br>
+      <input type="submit">
+    </form><br>
+    <a href="/login">Kembali</a>
+    <script>
+      function trim(event) {
+        event.target.value = event.target.value.trim();
+      }
+    </script>
+  </body>
+</html>

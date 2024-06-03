@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Perpustakan Online</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Login</h1>
+    <% if(err != null) { %>
+      <% if(err == "akun") { %>
+        <p>Akun tidak ditemukan!</p>
+      <% } else if(err == "accept") { %>
+        <p>Silahkan menunggu Admin untuk menerima pendaftaran</p>
+      <% } %>
+    <% } %>
+    <form action="/login" method="post">
+      Username: <input name="name" type="text" onchange='trim(event)'><br>
+      Password: <input name="pass" type="password" onchange='trim(event)'><br>
+      <input type="submit">
+    </form><br>
+    <a href="/">Kembali</a><br><br>
+    <a href="/ganti">Ganti Password</a>
+    <script>
+      function trim(event) {
+        event.target.value = event.target.value.trim();
+      }
+    </script>
+  </body>
+</html>

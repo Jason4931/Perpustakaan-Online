@@ -1,0 +1,77 @@
+Aplikasi untuk Perpustakaan
+
+Guest bisa membaca isi buku online
+Guest bisa register sebagai user (username, password)
+
+(User harus login terlebih dahulu)
+User bisa membaca isi buku online
+User bisa like & komentar
+User bisa report isi buku tertentu
+User bisa favorit buku
+User bisa mengatur profile (username, password, logout)
+
+(Admin harus login terlebih dahulu)
+Admin bisa buat & publish buku (form-upload pdf, input title author cover tahun-terbit)
+Admin bisa edit/delete buku
+Admin bisa cek komentar2 users & delete
+Admin bisa melihat report2 dari users
+Admin bisa mengatur profile (username, password, logout)
+Admin bisa mengatur akun2 user (username, password, role(user / admin))
+
+---
+
+https://docs.google.com/document/d/1-dLnqD54RUuI5tfAJrB2t7hQt9WOguxPDwu6T56SEuA/edit
+
+v Mengelola informasi buku: judul, penulis, penerbit, tahun terbit, edisi, sinopsis, genre, ISBN, stok, dan ulasan.
+v Mengelola informasi akun pengguna berupa nama pengguna dan kata kunci.
+v Aplikasi dapat melakukan aktivitas peminjaman dan pengembalian buku.
+v Mencatat informasi peminjaman buku berupa buku, pengguna, tanggal peminjaman, dan durasi dalam satuan hari.
+v Mencatat informasi pengembalian buku berupa buku, pengguna, tanggal pengembalian, dan status tepat waktu/terlambat.
+
+v Melihat daftar buku yang tersedia di perpustakaan.
+v Mencari buku tertentu dengan filter berupa judul, penulis, penerbit, tahun terbit, dan genre.
+v Melihat informasi judul, penulis, penerbit, tahun terbit, edisi, sinopsis, genre, ISBN, stok, dan ulasan buku.
+v Tamu dapat mendaftar sebagai anggota dengan mengirimkan nama pengguna yang unik dan kata kunci ke aplikasi.
+
+v Anggota dapat login dengan mengirimkan kombinasi nama pengguna dan kata kunci yang telah terdaftar ke aplikasi.
+v Anggota dapat mengubah kata kunci akun dengan mengirimkan kata kunci lama dan kata kunci baru ke aplikasi.
+v Anggota dapat meminjam buku yang tersedia dengan maksimal 5 buku secara bersamaan dan setiap judul maksimal 1.
+v Anggota dapat mengembalikan buku yang dipinjamnya.
+
+---
+
+https://docs.google.com/document/d/1-dLnqD54RUuI5tfAJrB2t7hQt9WOguxPDwu6T56SEuA/edit
+
+v Hapus buku (soft) -> del
+v Permintaan register -> accept
+v Enkripsi password akun2
+v Status peminjaman buku2
+v Waiting list pinjaman -> status
+v Notifikasi batas peminjaman
+v Notifikasi buku -> date
+v Notifikasi ulasan -> date
+v Statistik buku yang paling sering dipinjam, genre terpopuler, dan ulasan terbanyak.
+
+v Hapus password di tabel akun
+v Kembali stok fix
+v Waiting list date_pinjam
+v Relasi hapus akun -> soft (accepted) + hard del
+
+v Komentar setelah pinjam + kembali
+v Komentar update kedua
+v Edit Password novalue
+v Edit Role dropdown
+v Delete akun + buku, paksa kembali
+v Delete akun, logout akun del
+
+---
+
+Tabel:
+Akun: id, username, password, role, accept, del
+Buku: id, judul, penulis, penerbit, tahun_terbit, edisi, sinopsis, genre, ISBN, stok, del, date
+Pinjam: id, user_id, buku_id, date_pinjam, lama, date_kembali, status
+Komentar: id, user_id, buku_id, text, date
+
+---
+
+https://assets-global.website-files.com/6100d0111a4ed76bc1b9fd54/64edc2ee1db8e181ace64c5d_vlXAeX2DxLwL3GwNNbVd9KL_0yirGw0BX7hr2WusqhCs_7LHikgDuCfUk3VBMUepMH9TIwrL-OVWHajGOfmiPg6kEOw8Yy7a4o-vuRTJYUtzWQnEOeitKwTjRE4QXXlvkbT3iC_b2ZyN74O8raVDeA.png

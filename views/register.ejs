@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Perpustakan Online</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Register</h1>
+    <% if(err != null) { %>
+      <p>Akun sudah dipakai!</p>
+    <% } %>
+    <form action="/register" method="post">
+      Username: <input name="name" type="text" onchange='trim(event)'><br>
+      Password: <input name="pass" type="password" onchange='trim(event)'><br>
+      <input type="submit">
+    </form><br>
+    <a href="/">Kembali</a>
+    <script>
+      function trim(event) {
+        event.target.value = event.target.value.trim();
+      }
+    </script>
+  </body>
+</html>
