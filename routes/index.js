@@ -89,18 +89,26 @@ router.get('/isi/:id', async function (req, res, next) {
     res.redirect('/');
   }
 });
-router.get('/register', async function(req, res, next) {
-  if (req.query.err != null) {
-    res.render('register', { err: req.query.err });
+router.get('/register', async function (req, res, next) {
+  if (req.session.Role == null) {
+    if (req.query.err != null) {
+      res.render('register', { err: req.query.err });
+    } else {
+      res.render('register', { err: null });
+    }
   } else {
-    res.render('register', { err: null });
+    res.redirect('/');
   }
 });
 router.get('/login', async function (req, res, next) {
-  if (req.query.err != null) {
-    res.render('login', { err: req.query.err });
+  if (req.session.Role == null) {
+    if (req.query.err != null) {
+      res.render('login', { err: req.query.err });
+    } else {
+      res.render('login', { err: null });
+    }
   } else {
-    res.render('login', { err: null });
+    res.redirect('/');
   }
 });
 router.post('/register', async function (req, res, next) {
@@ -138,10 +146,14 @@ router.get('/logout', async function(req, res, next) {
   res.redirect('/');
 });
 router.get('/ganti', async function (req, res, next) {
-  if (req.query.err != null) {
-    res.render('ganti', { err: req.query.err });
+  if (req.session.Role == null) {
+    if (req.query.err != null) {
+      res.render('ganti', { err: req.query.err });
+    } else {
+      res.render('ganti', { err: null });
+    }
   } else {
-    res.render('ganti', { err: null });
+    res.redirect('/');
   }
 });
 router.post('/ganti', async function (req, res, next) {
@@ -213,37 +225,41 @@ router.post('/pinjam/:id', async function (req, res, next) {
   }
 });
 router.get('/kembali/:id', async function (req, res, next) {
-  let today = new Date();
-  let akunfind = await akun.find({ "username": req.session.Nama });
-  let pinjamfind = await pinjam.find({ "user_id": akunfind[0]._id, "buku_id": req.params.id });
-  let datepinjam = new Date(pinjamfind[pinjamfind.length - 1].date_pinjam);
-  let hari = Math.abs((today.getTime() - datepinjam.getTime()) / (1000 * 3600 * 24));
-  let stok = await buku.find({ "_id": req.params.id });
-  await buku.findByIdAndUpdate(req.params.id, {
-    stok: stok[0].stok + 1
-  });
-  if (hari <= pinjamfind[pinjamfind.length - 1].lama) {
-    await pinjam.findByIdAndUpdate(pinjamfind[pinjamfind.length - 1]._id, {
-      date_kembali: today,
-      status: "Tepat Waktu"
-    });
-  } else {
-    await pinjam.findByIdAndUpdate(pinjamfind[pinjamfind.length - 1]._id, {
-      date_kembali: today,
-      status: "Terlambat"
-    });
-  }
-  let waitinglist = await pinjam.find({ "status": "Waiting List", "buku_id": req.params.id });
-  if (waitinglist.length > 0) {
+  if (req.session.Role != null) {
+    let today = new Date();
+    let akunfind = await akun.find({ "username": req.session.Nama });
+    let pinjamfind = await pinjam.find({ "user_id": akunfind[0]._id, "buku_id": req.params.id });
+    let datepinjam = new Date(pinjamfind[pinjamfind.length - 1].date_pinjam);
+    let hari = Math.abs((today.getTime() - datepinjam.getTime()) / (1000 * 3600 * 24));
+    let stok = await buku.find({ "_id": req.params.id });
     await buku.findByIdAndUpdate(req.params.id, {
-      stok: stok[0].stok
+      stok: stok[0].stok + 1
     });
-    await pinjam.findByIdAndUpdate(waitinglist[0]._id, {
-      date_pinjam: today,
-      status: "Sedang Dipinjam"
-    });
+    if (hari <= pinjamfind[pinjamfind.length - 1].lama) {
+      await pinjam.findByIdAndUpdate(pinjamfind[pinjamfind.length - 1]._id, {
+        date_kembali: today,
+        status: "Tepat Waktu"
+      });
+    } else {
+      await pinjam.findByIdAndUpdate(pinjamfind[pinjamfind.length - 1]._id, {
+        date_kembali: today,
+        status: "Terlambat"
+      });
+    }
+    let waitinglist = await pinjam.find({ "status": "Waiting List", "buku_id": req.params.id });
+    if (waitinglist.length > 0) {
+      await buku.findByIdAndUpdate(req.params.id, {
+        stok: stok[0].stok
+      });
+      await pinjam.findByIdAndUpdate(waitinglist[0]._id, {
+        date_pinjam: today,
+        status: "Sedang Dipinjam"
+      });
+    }
+    res.redirect('/isi/' + req.params.id);
+  } else {
+    res.redirect('/');
   }
-  res.redirect('/isi/'+req.params.id);
 });
 router.get('/src/:field/:search', async function(req, res, next) {
   const { field, search } = req.params;
@@ -275,7 +291,11 @@ router.get('/src/:field/:search', async function(req, res, next) {
   }
 });
 router.get('/create', async function (req, res, next) {
-  res.render('createbuku');
+  if (req.session.Role == "admin") {
+    res.render('createbuku');
+  } else {
+    res.redirect('/');
+  }
 });
 router.post('/create', async function (req, res, next) {
   let today = new Date();
@@ -296,29 +316,39 @@ router.post('/create', async function (req, res, next) {
   res.redirect('/');
 });
 router.get('/delbuku/:id', async function (req, res, next) {
-  await buku.findByIdAndUpdate(req.params.id, {
-    del: 1
-  });
-  let pinjams = await pinjam.find({ "buku_id": req.params.id, "status": "Sedang Dipinjam" });
-  if (pinjams.length > 0) {
-    let today = new Date();
-    pinjams.forEach(async function (pinjams) {
-      await pinjam.findByIdAndUpdate(pinjams._id, {
-        date_kembali: today,
-        status: "Tepat Waktu"
-      });
+  if (req.session.Role == "admin") {
+    await buku.findByIdAndUpdate(req.params.id, {
+      del: 1
     });
+    let pinjams = await pinjam.find({ "buku_id": req.params.id, "status": "Sedang Dipinjam" });
+    if (pinjams.length > 0) {
+      let today = new Date();
+      pinjams.forEach(async function (pinjams) {
+        await pinjam.findByIdAndUpdate(pinjams._id, {
+          date_kembali: today,
+          status: "Tepat Waktu"
+        });
+      });
+    }
   }
   res.redirect('/');
 });
 router.get('/akun', async function (req, res, next) {
-  res.render('akun', { akun: await akun.find(), akunacc: await akun.find({ "accept": null }) });
+  if (req.session.Role == "admin") {
+    res.render('akun', { akun: await akun.find(), akunacc: await akun.find({ "accept": null }) });
+  } else {
+    res.redirect('/');
+  }
 });
 router.get('/accakun/:id', async function (req, res, next) {
-  await akun.findByIdAndUpdate(req.params.id, {
-    accept: 1
-  });
-  res.redirect('/akun');
+  if (req.session.Role == "admin") {
+    await akun.findByIdAndUpdate(req.params.id, {
+      accept: 1
+    });
+    res.redirect('/akun');
+  } else {
+    res.redirect('/');
+  }
 });
 router.post('/updakun', async function (req, res, next) {
   await akun.findByIdAndUpdate(req.body.id, {
@@ -329,28 +359,40 @@ router.post('/updakun', async function (req, res, next) {
   res.redirect('/akun');
 });
 router.get('/delakunhard/:id', async function (req, res, next) {
-  await akun.findByIdAndDelete(req.params.id);
-  res.redirect('/akun');
+  if (req.session.Role == "admin") {
+    await akun.findByIdAndDelete(req.params.id);
+    res.redirect('/akun');
+  } else {
+    res.redirect('/');
+  }
 });
 router.get('/delakun/:id', async function (req, res, next) {
-  await akun.findByIdAndUpdate(req.params.id, {
-    del: 1
-  });
-  let pinjams = await pinjam.find({ "user_id": req.params.id, "status": "Sedang Dipinjam" });
-  if (pinjams.length > 0) {
-    let today = new Date();
-    pinjams.forEach(async function (pinjams) {
-      await pinjam.findByIdAndUpdate(pinjams._id, {
-        date_kembali: today,
-        status: "Tepat Waktu"
-      });
+  if (req.session.Role == "admin") {
+    await akun.findByIdAndUpdate(req.params.id, {
+      del: 1
     });
+    let pinjams = await pinjam.find({ "user_id": req.params.id, "status": "Sedang Dipinjam" });
+    if (pinjams.length > 0) {
+      let today = new Date();
+      pinjams.forEach(async function (pinjams) {
+        await pinjam.findByIdAndUpdate(pinjams._id, {
+          date_kembali: today,
+          status: "Tepat Waktu"
+        });
+      });
+    }
+    res.redirect('/akun');
+  } else {
+    res.redirect('/');
   }
-  res.redirect('/akun');
 });
 router.get('/delcomment/:id', async function (req, res, next) {
-  await komentar.findByIdAndDelete(req.params.id);
-  res.redirect('/isi/'+req.query.id);
+  if (req.session.Role == "admin") {
+    await komentar.findByIdAndDelete(req.params.id);
+    res.redirect('/isi/' + req.query.id);
+  } else {
+    res.redirect('/');
+  }
 });
 router.post('/addcomment/:id', async function (req, res, next) {
   let today = new Date();
@@ -371,33 +413,37 @@ router.post('/addcomment/:id', async function (req, res, next) {
   res.redirect('/isi/'+req.params.id);
 });
 router.get('/pinjaman', async function (req, res, next) {
-  let pinjamdata = await pinjam.aggregate([
-    {
-      $addFields: {
-        buku_id: { $toObjectId: "$buku_id" },
-        user_id: { $toObjectId: "$user_id" }
-      }
-    },
-    {
-      $lookup:
+  if (req.session.Role == "admin") {
+    let pinjamdata = await pinjam.aggregate([
       {
-        from: 'bukus',
-        localField: 'buku_id',
-        foreignField: '_id',
-        as: 'buku'
-      }
-    },
-    {
-      $lookup:
+        $addFields: {
+          buku_id: { $toObjectId: "$buku_id" },
+          user_id: { $toObjectId: "$user_id" }
+        }
+      },
       {
-        from: 'akuns',
-        localField: 'user_id',
-        foreignField: '_id',
-        as: 'user'
+        $lookup:
+        {
+          from: 'bukus',
+          localField: 'buku_id',
+          foreignField: '_id',
+          as: 'buku'
+        }
+      },
+      {
+        $lookup:
+        {
+          from: 'akuns',
+          localField: 'user_id',
+          foreignField: '_id',
+          as: 'user'
+        }
       }
-    }
-  ]);
-  res.render('pinjaman', { pinjam: pinjamdata });
+    ]);
+    res.render('pinjaman', { pinjam: pinjamdata });
+  } else {
+    res.redirect('/');
+  }
 });
 
 module.exports = router;

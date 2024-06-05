@@ -50,9 +50,11 @@
             <% } %>
           <% } %>
         <% }) %><br>
+        <% let i = 1; %>
         <% pinjam.forEach(function(pinjam) { %>
-          <% if(pinjam.status != "Sedang Dipinjam") { %>
+          <% if(pinjam.status != "Sedang Dipinjam" && i <= 5) { %>
             <a href="/isi/<%= pinjam.buku_id %>" style="text-decoration: none"><%= pinjam.buku[0].judul %></a> (<%= pinjam.status %>)<br>
+            <% i=i+1; %>
           <% } %>
         <% }) %><br>
       <% } %>

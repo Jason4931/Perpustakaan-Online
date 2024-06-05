@@ -1,0 +1,125 @@
+Type    Test Case                           Steps   Steps Description             Expected Result                 Pre-Condition                   Post-Condition
+
+Positif Menyimpan informasi buku            1       Ketik tambahkan buku          Masuk halaman tambah buku       Telah login sebagai admin       Sesuai ekspektasi
+                                            2       Input semua yang ada          Bisa input                                                      Sesuai ekspektasi
+                                            3       Ketik tombol submit           Buku masuk kedalam database                                     Sesuai ekspektasi
+Positif Menyimpan informasi buku            1       Ketik buku                    Masuk halaman isi               Sudah login & sdh pinjam        Sesuai ekspektasi
+                                            2       Input ulasan                  Bisa input                                                      Sesuai ekspektasi
+                                            3       Ketik tombol submit           Ulasan masuk kedalam database                                   Sesuai ekspektasi
+Negatif Menyimpan informasi buku            1       Salah satu input kosong       Input kosong                    Sudah login / Sudah login admin Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul required field                                           Sesuai ekspektasi
+Negatif Menyimpan informasi buku            1       Masuk tambah buku melalui URL Ditolak                         Belum login sebagai admin       Sesuai ekspektasi
+Negatif Menyimpan informasi buku            1       Salah tipe input              Input salah tipe                Telah login sebagai admin       Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul tipenya hrs benar                                        Sesuai ekspektasi
+Negatif Menyimpan informasi buku            1       Input angka desimal           Input angka desimal             Telah login sebagai admin       Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul angka hrs bulat                                          Sesuai ekspektasi
+Negatif Menyimpan informasi buku            1       Input angka negatif           Input angka negatif             Telah login sebagai admin       Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul angka hrs > 0 / 1                                        Sesuai ekspektasi
+Negatif Menyimpan informasi buku            1       Input ulasan                  Bisa input                      Sudah login & sdh ulasan        Sesuai ekspektasi
+                                            2       Ketik tombol submit           Ulasan updated dlm database                                     Sesuai ekspektasi
+
+Positif Pengelolaan Buku oleh Pustakawan    1       Ketik tambahkan buku          Masuk halaman tambah buku       Telah login sebagai admin       Sesuai ekspektasi
+                                            2       Input semua yang ada          Bisa input                                                      Sesuai ekspektasi
+                                            3       Ketik tombol submit           Buku masuk kedalam database                                     Sesuai ekspektasi
+Positif Pengelolaan Buku oleh Pustakawan    1       Ketik buku                    Masuk halaman isi               Telah login sebagai admin       Sesuai ekspektasi
+                                            2       Ketik tombol edit buku        Muncul form edit                                                Sesuai ekspektasi
+                                            3       Input semua yang ada          Bisa input                                                      Sesuai ekspektasi
+                                            4       Ketik tombol submit           Buku updated dlm database                                       Sesuai ekspektasi
+Positif Pengelolaan Buku oleh Pustakawan    1       Ketik buku                    Masuk halaman isi               Telah login sebagai admin       Sesuai ekspektasi
+                                            2       Ketik tombol hapus buku       Buku deleted & tdk bisa dilihat                                 Sesuai ekspektasi
+                                                                                  Paksa kembali semua user                                        Sesuai ekspektasi
+Negatif Pengelolaan Buku oleh Pustakawan    1       Salah satu input kosong       Input kosong                    Telah login sebagai admin       Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul required field                                           Sesuai ekspektasi
+Negatif Pengelolaan Buku oleh Pustakawan    1       Salah tipe input              Input salah tipe                Telah login sebagai admin       Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul tipenya hrs benar                                        Sesuai ekspektasi
+Negatif Pengelolaan Buku oleh Pustakawan    1       Input angka desimal           Input angka desimal             Telah login sebagai admin       Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul angka hrs bulat                                          Sesuai ekspektasi
+Negatif Pengelolaan Buku oleh Pustakawan    1       Input angka negatif           Input angka negatif             Telah login sebagai admin       Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul angka hrs > 0 / 1                                        Sesuai ekspektasi
+Negatif Pengelolaan Buku oleh Pustakawan    1       Paksa delete melalui URL      Ditolak                         Belum login sebagai admin       Sesuai ekspektasi
+
+Positif Pendaftaran Anggota                 1       Ketik register                Masuk halaman register          Belum login                     Sesuai ekspektasi
+                                            2       Input name & pass             Bisa input                                                      Sesuai ekspektasi
+                                            3       Ketik tombol submit           Kirim ijin terima ke admin                                      Sesuai ekspektasi
+Negatif Pendaftaran Anggota                 1       Salah satu input kosong       Input kosong                    Belum login                     Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul required field                                           Sesuai ekspektasi
+Negatif Pendaftaran Anggota                 1       Masuk register melalui URL    Ditolak                         Sudah login                     Sesuai ekspektasi
+
+Positif Login dan Otentikasi                1       Ketik login                   Masuk halaman login             Belum login & sdh diterima      Sesuai ekspektasi
+                                            2       Input name & pass             Bisa input                                                      Sesuai ekspektasi
+                                            3       Ketik tombol submit           Masuk sebagai user/admin                                        Sesuai ekspektasi
+Negatif Login dan Otentikasi                1       Salah satu input kosong       Input kosong                    Belum login                     Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul required field                                           Sesuai ekspektasi
+Negatif Login dan Otentikasi                1       Username/Password salah       Input user/pass salah           Belum login                     Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul user&pass tdk ditemukan                                  Sesuai ekspektasi
+Negatif Login dan Otentikasi                1       Input name & pass             Bisa input                      Belum login & blm diterima      Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul tunggu admin menerima                                    Sesuai ekspektasi
+Negatif Login dan Otentikasi                1       Masuk login melalui URL       Ditolak                         Sudah login                     Sesuai ekspektasi
+
+Positif Pengelolaan Akun oleh Pustakawan    1       Ketik register                Masuk halaman register          Belum login                     Sesuai ekspektasi
+                                            2       Input name & pass             Bisa input                                                      Sesuai ekspektasi
+                                            3       Ketik tombol submit           Kirim ijin terima ke admin                                      Sesuai ekspektasi
+Positif Pengelolaan Akun oleh Pustakawan    1       Ketik manage akun             Masuk halaman akun              Telah login sebagai admin       Sesuai ekspektasi
+                                            2       Ketik tombol edit             Muncul form edit                                                Sesuai ekspektasi
+                                            3       Input user, pass, role        Bisa input                                                      Sesuai ekspektasi
+                                            4       Ketik tombol submit           Akun updated dlm database                                       Sesuai ekspektasi
+Positif Pengelolaan Akun oleh Pustakawan    1       Ketik manage akun             Masuk halaman akun              Telah login sebagai admin       Sesuai ekspektasi
+                                            2       Ketik tombol delete           Akun deleted                                                    Sesuai ekspektasi
+                                                                                  Paksa kembali semua buku                                        Sesuai ekspektasi
+                                                                                  Paksa logout user tersebut                                      Sesuai ekspektasi
+Negatif Pengelolaan Akun oleh Pustakawan    1       Salah satu input kosong       Input kosong                    Belum login / Sudah login admin Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul required field                                           Sesuai ekspektasi
+Negatif Pengelolaan Akun oleh Pustakawan    1       Masuk register melalui URL    Ditolak                         Sudah login                     Sesuai ekspektasi
+Negatif Pengelolaan Akun oleh Pustakawan    1       Masuk akun melalui URL        Ditolak                         Belum login sebagai admin       Sesuai ekspektasi
+Negatif Pengelolaan Buku oleh Pustakawan    1       Paksa delete melalui URL      Ditolak                         Belum login sebagai admin       Sesuai ekspektasi
+
+Positif Peminjaman Buku                     1       Ketik buku                    Masuk halaman isi               Sudah login                     Sesuai ekspektasi
+                                            2       Ketik tombol pinjam buku      Muncul form pinjam                                              Sesuai ekspektasi
+                                            3       Input lama                    Bisa input                                                      Sesuai ekspektasi
+                                            4       Ketik tombol submit           Buku terpinjam & masuk database                                 Sesuai ekspektasi
+                                                                                  Stok buku kurang 1                                              Sesuai ekspektasi
+Negatif Peminjaman Buku                     1       Input kosong                  Input kosong                    Sudah login                     Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul required field                                           Sesuai ekspektasi
+Negatif Peminjaman Buku                     1       Salah tipe input              Input salah tipe                Sudah login                     Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul tipenya hrs benar                                        Sesuai ekspektasi
+Negatif Peminjaman Buku                     1       Input angka desimal           Input angka desimal             Sudah login                     Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul angka hrs bulat                                          Sesuai ekspektasi
+Negatif Peminjaman Buku                     1       Input angka negatif           Input angka negatif             Sudah login                     Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul angka hrs > 1                                            Sesuai ekspektasi
+Negatif Peminjaman Buku                     1       Input lama                    Bisa input                      Sudah login & sdh pinjam 5      Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul maksimal 5 buku                                          Sesuai ekspektasi
+Negatif Peminjaman Buku                     1       Input lama                    Bisa input                      Sudah login & stok buku 0       Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul stok habis                                               Sesuai ekspektasi
+
+Positif Pengembalian Buku                   1       Ketik buku                    Masuk halaman isi               Sudah login & sdh pinjam        Sesuai ekspektasi
+                                            2       Ketik tombol kembalikan buku  Buku kembali & update database                                  Sesuai ekspektasi
+                                                                                  Stok buku tambah 1                                              Sesuai ekspektasi
+                                                                                  Pinjam buku ke waiting list                                     Sesuai ekspektasi
+Negatif Pengembalian Buku                   1       Paksa kembali melalui URL     Ditolak                         Belum login                     Sesuai ekspektasi
+
+Positif Pencarian Buku                      1       Pilih filter                  Bisa memilih                    Belum login / Sudah login       Sesuai ekspektasi
+                                            2       Input search                  Muncul list buku search                                         Sesuai ekspektasi
+Negatif Pencarian Buku                      1       Input kosong                  Muncul semua list buku          Belum login / Sudah login       Sesuai ekspektasi
+Negatif Pencarian Buku                      1       Search/Filter salah           Muncul tidak ada data           Belum login / Sudah login       Sesuai ekspektasi
+
+Positif Melihat Informasi Buku              1       Ketik buku                    Masuk halaman isi               Sudah login & sdh pinjam        Sesuai ekspektasi
+
+Positif Pengaturan Kata Kunci               1       Ketik login                   Masuk halaman login             Belum login                     Sesuai ekspektasi
+                                            2       Ketik ganti password          Masuk halaman ganti                                             Sesuai ekspektasi
+                                            3       Input user, pass1, pass2      Bisa input                                                      Sesuai ekspektasi
+                                            4       Ketik tombol submit           Akun updated dlm database                                       Sesuai ekspektasi
+Negatif Pengaturan Kata Kunci               1       Salah satu input kosong       Input kosong                    Belum login                     Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul required field                                           Sesuai ekspektasi
+Negatif Pengaturan Kata Kunci               1       User/Pass1 salah              Input user/pass1 salah          Belum login                     Sesuai ekspektasi
+                                            2       Ketik tombol submit           Muncul user&pass tdk ditemukan                                  Sesuai ekspektasi
+Negatif Pengaturan Kata Kunci               1       Masuk ganti melalui URL       Ditolak                         Sudah login                     Sesuai ekspektasi
+
+Positif Notifikasi Pustakawan               1       Ketik manage akun             Masuk halaman akun              Telah login sebagai admin       Sesuai ekspektasi
+                                            2       Ketik tombol accept           Akun diterima                                                   Sesuai ekspektasi
+Positif Notifikasi Pustakawan               1       Ketik manage akun             Masuk halaman akun              Telah login sebagai admin       Sesuai ekspektasi
+                                            2       Ketik tombol delete           Akun deleted dlm database                                       Sesuai ekspektasi
+Negatif Notifikasi Pustakawan               1       Masuk akun melalui URL        Ditolak                         Belum login sebagai admin       Sesuai ekspektasi
+Negatif Notifikasi Pustakawan               1       Paksa accept melalui URL      Ditolak                         Belum login sebagai admin       Sesuai ekspektasi
+Negatif Notifikasi Pustakawan               1       Paksa delete melalui URL      Ditolak                         Belum login sebagai admin       Sesuai ekspektasi
+
+Positif Laporan Peminjaman dan Pengembalian 1       Ketik laporan peminjaman      Masuk halaman pinjaman          Telah login sebagai admin       Sesuai ekspektasi
